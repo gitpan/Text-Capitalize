@@ -3,21 +3,28 @@
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
+use warnings;
+use strict;
+$|=1;
 
 use Test::More;
-BEGIN { use_ok('Text::Capitalize') };
-
 use FindBin qw($Bin);
-use lib ("$Bin/../lib/perl", "$Bin/../t/lib"); 
-use Text::Capitalize 0.2 qw(capitalize_title);
+BEGIN { 
+  use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib"); 
+  use_ok('Text::Capitalize') 
+};
+
+use Text::Capitalize 0.4 qw(capitalize_title);
 use __title_tests qw(%expect_capitalize_title_PRESERVE_ALLCAPS); 
 
 plan tests => scalar keys %expect_capitalize_title_PRESERVE_ALLCAPS;
             
 #########################
 
-foreach $in (keys %expect_capitalize_title_PRESERVE_ALLCAPS) { 
-   $out = $expect_capitalize_title_PRESERVE_ALLCAPS{$in};
-   is (capitalize_title($in, PRESERVE_ALLCAPS => 1), $out, "test: $in");
+{
+  my ($in, $out_expected);
+  foreach $in (keys %expect_capitalize_title_PRESERVE_ALLCAPS) { 
+    $out_expected = $expect_capitalize_title_PRESERVE_ALLCAPS{$in};
+    is (capitalize_title($in, PRESERVE_ALLCAPS => 1), $out_expected, "test: $in");
+  }
 }

@@ -10,4 +10,7 @@ t/004-captitle-preserve_allcaps.t
 t/005-captitle-preserve_anycaps.t
 t/006-captitle-preserve_allcaps_and_whitespace.t
 t/007-captitle-preserve_anycaps_and_whitespace.t
+t/008-random_case.t
+t/009-scramble_case.t
 t/lib/__title_tests.pm
+META.yml                                 Module meta-data (added by MakeMaker)

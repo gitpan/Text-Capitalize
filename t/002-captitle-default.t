@@ -3,21 +3,38 @@
 
 #########################
 
-# change 'tests => 1' to 'tests => last_test_to_print';
+use warnings;
+use strict;
+$|=1;
 
 use Test::More;
-BEGIN { use_ok('Text::Capitalize') };
-
 use FindBin qw($Bin);
-use lib ("$Bin/../lib/perl", "$Bin/../t/lib"); 
-use Text::Capitalize 0.2 qw(capitalize_title);
+BEGIN { 
+  use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib"); 
+  use_ok('Text::Capitalize') 
+};
+
+use Text::Capitalize 0.4 qw(capitalize_title);
 use __title_tests qw(%expect_capitalize_title_default); 
 
-plan tests => scalar keys %expect_capitalize_title_default;
+plan tests => scalar( keys( %expect_capitalize_title_default ) ) + 1;
             
 #########################
 
-foreach $in (keys %expect_capitalize_title_default) { 
-   $out = $expect_capitalize_title_default{$in};
-   is (capitalize_title($in), $out, "test: $in");
+{
+  my ($in, $out_expected);
+  foreach $in (keys %expect_capitalize_title_default) { 
+    $out_expected = $expect_capitalize_title_default{$in};
+    is (capitalize_title($in), $out_expected, "test: $in");
+  }
 }
+
+# Regression test: make sure $_ isn't munged by unlocalized use
+{ 
+  my $anything = "Whirl and Pieces";
+  my $keeper = "abc123";
+  local $_ = $keeper;
+  capitalize_title($anything);
+  is ($_, $keeper, "\$\_ unaffected by capitalize_title");
+}
+

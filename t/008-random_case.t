@@ -1,0 +1,57 @@
+# Before `make install' is performed this script should be runnable with
+# `make test'. After `make install' it should work as `perl 008-random_case.t'
+
+#########################
+
+use warnings;
+use strict;
+$|=1;
+            
+use Test::More;
+use FindBin qw($Bin);
+BEGIN { 
+  use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib"); 
+  use_ok('Text::Capitalize') 
+};
+
+use Text::Capitalize 0.4 qw(random_case);
+use __title_tests qw(%expect_random_case); 
+
+plan tests => scalar( keys( %expect_random_case ) ) + 1;
+            
+#########################
+
+{
+ # seeding with a known value, should get repeatable sequence from rand
+  srand(666);
+ # Also need to sort the test cases, to get the same order that 
+ # was used in generating the answer key.  
+
+  my ($in, $out, $out_expected);
+#  open my $tfh, ">", "/home/doom/End/Cave/CapitalizeTitle/tmp/tempoutput.$$" or die $!;
+  foreach $in (sort keys %expect_random_case) {  # must sort for same order as original test generation
+    $out_expected = $expect_random_case{$in};
+    $out = random_case($in);
+
+#    $in =~ s/'/\\'/g;
+#    $out =~ s/'/\\'/g;
+#    print $tfh "     '$in' =>\n        '$out',\n";
+
+    is ($out, $out_expected, "test: $in");
+  }
+}
+
+# Weirdly enough, I had to use the code commented out above as 
+# a test case generator.  Trying to do the same thing in a 
+# separate script didn't work... something odd going on with 
+# the srand method of getting a repeatable sequence out of rand? 
+
+# Regression test: make sure $_ isn't munged by unlocalized use
+{ 
+  my $anything = "Whirl and Pieces";
+  my $keeper = "abc123";
+  local $_ = $keeper;
+  random_case($anything);
+  is ($_, $keeper, "\$\_ unaffected by capitalize_title");
+}
+

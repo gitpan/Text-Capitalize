@@ -19,7 +19,7 @@ $DEBUG = 0;
                      random_case
                      zippify_case
                     ); 
-$VERSION	= '0.3';
+$VERSION	= '0.4';
 
 # Define the pattern to match "exceptions": the minor words 
 # that don't usually get capitalized in titles (used by capitalize_title)
@@ -30,9 +30,6 @@ use vars qw(@exceptions);
      to of by at for but in with has
      de von
   );
-
-# Once upon a time:
-# s re t d
 
 # Define the default arguments for the capitalize_title function
 use vars qw(%defaults_capitalize_title);
@@ -49,14 +46,14 @@ use vars qw(%defaults_capitalize_title);
 use vars qw($word_rule $sentence_rule);
 use vars qw($anything $ellipsis $dot $qmark $emdash $terminator $ws);
 
-$word_rule =          qr{ ([^\w\s]*)   # $1 - leading punctuation 
-                                       #   (e.g. ellipsis, apostrophe)
-                           ([\w']*)    # $2 - the word (later apostrophes included)
-                           ([^\w\s]*)  # $3 - trailing punctuation 
-                                       #   (e.g. comma, ellipsis, period)
-                           (\s*)       # $4 - trailing whitespace 
-                                       #   (usually " ", though at EOL prob "")
-                              }x ;
+$word_rule =  qr{ ([^\w\s]*)   # $1 - leading punctuation 
+                               #   (e.g. ellipsis, leading apostrophe)
+                   ([\w']*)    # $2 - the word itself (includes non-leading apostrophes)
+                   ([^\w\s]*)  # $3 - trailing punctuation 
+                               #   (e.g. comma, ellipsis, period)
+                   (\s*)       # $4 - trailing whitespace 
+                               #   (usually " ", though at EOL prob "")
+                 }x ;
 
 # Pieces for the $sentence_rule
 $anything =    qr{.*?};  
@@ -82,9 +79,10 @@ sub capitalize {
 }
 
 sub capitalize_title { 
-
+  local $_;
   my ($keep_ws, $keep_acronyms, $keep_mixups);
-  my ($leading_whitespace, $string, $sentence, @words, $word, $spc, $punct_leading, $punct_trailing);
+  my ($leading_whitespace, $string, $sentence, @words, $word, $spc);
+  my ($punct_leading, $punct_trailing);
   my ($i, $first, $last);
   my ($new_string, $new_sentence,  $exception_rule, $exceptions_or);
 
@@ -129,7 +127,7 @@ sub capitalize_title {
       # in an anonymous array in the array @words
 
       # If we've matched something, load it
-      # (we check because the above pattern returns an empty "match" at the end)
+      # (checking because the above pattern returns an empty "match" at the end)
        if ( ($2 ne '') or $1 or $3 or ($4 ne '') ) {   
           $words[$i] = [$1, $2, $3, $4]; # That is: $punct_leading, $word, $punct_trailing, $spc
           $i++; 
@@ -140,8 +138,7 @@ sub capitalize_title {
 
     # (Using a for loop here with an explicit counter,
     # because it makes it easier to know when you're doing
-    # the first and last words - this is why we're splitting it up 
-    # in advance and saving stuff in the @words array. )
+    # the first and last words)
 
     $first = 0;
     $last = $#words; 
@@ -218,6 +215,7 @@ sub capitalize_title {
 
 sub scramble_case { 
    # Function to provide a special effect: sCraMBliNg tHe CaSe
+   local $_;
    my $string = shift;
    my (@chars, $uppity, $newstring, $total, $uppers, $downers, $tweak);
    @chars = split /(?=.)/, $string;
@@ -256,6 +254,7 @@ sub scramble_case {
 
 sub random_case { 
 #  Provided for comparison to scramble_case
+   local $_;
    my $string = shift;
    my (@chars, $uppity, $newstring);
    @chars = split /(?=.)/, $string;
@@ -279,8 +278,9 @@ sub zippify_case {
    # Function to provide a special effect: RANDOMLY upcasing WHOLE WORDS at a TIME
 
    # This uses a similar algorithm to scramble_case, though it also
-   # ignores words on the @exceptions list, just as title_case does.
+   # ignores words on the @exceptions list, just as capitalize_title does.
 
+   local $_;
    my $string = shift;
    my (@words, $uppity, $newstring, $total, $uppers, $downers, $tweak, $word);
    @words = split /\b/, $string;
@@ -296,14 +296,9 @@ sub zippify_case {
         next WORD if m/\Q$word\E/i;
       }
 
-      # Rather than "int(rand(2))" which generates a 50/50 distribution of 0s and 1s,
-      # we're using "int(rand(1+$tweak))" where $tweak will
-      # provide a restoring force back to the average
-      # So here we want $tweak:
-      #    to go to 1 when you approach $uppers = $downers
-      #    to be larger than 1 if $downers > $uppers
-      #    to be less than 1 if $uppers > $downers
-      # Simple formula that does this:
+      # Just as with scramble_case, we're using a simple "$tweak" formula 
+      # here to to get a modified "random" distribution with fewer 
+      # "streaks" than normal.
 
       $tweak = $downers/$uppers;
       $uppity = int( rand(1 + $tweak) ); 
@@ -347,6 +342,20 @@ Text::Capitalize - capitalize strings ("to WORK AS titles" becomes "To Work as T
       The Ring:  Symbol or Cliche?
       (Note, double-space after colon is still there.)
 
+   # To work on international characters, may need to set locale to something appropriate
+   use Env qw(LANG);
+   $LANG = "en_US";
+   print capitalize_title("über maus"), "\n";
+      Über Maus
+
+   use Text::Capitalize qw(scramble_case);
+   print scramble_case('It depends on what you mean by "mean"');
+      It dEpenDS On wHAT YOu mEan by "meAn".
+
+
+
+
+
 =head1 ABSTRACT
 
   Text::Capitalize is for capitalizing strings in a manner 
@@ -378,7 +387,6 @@ Examples of title formatting with "capitalize":
 
 =back
 
-
 Some simple examples of title formatting with "capitalize_title":
 
 =over 
@@ -398,7 +406,6 @@ of transformation:
 =item 'get whacky' might become 'gET wHaCkY'
 
 =back
-
 
 =head1 BACKGROUND
 
@@ -435,14 +442,10 @@ only includes the shortest of the common prepositions (to of by at for but in).
 
 The default entries on the exception list are:
 
-=over
-
      a an the 
      and or nor for but so yet 
      to of by at for but in with has
      de von
-
-=back
 
 The observant may note that the last row is not
 composed of English words.  The honorary "de" has been 
@@ -479,11 +482,12 @@ for example "from":
 
 In order to work with a wide range of input strings, by default
 capitalize_title presumes that upper-case input needs to be adjusted
-(e.g. "DOOM APPROACHES!" would become "Doom Approaches!").  But, this doesn't 
-allow for the possibilities such as an acronym in a title (e.g. "RAM Prices Plummet" 
-ideally should not become "Ram Prices Plummet").  If the PRESERVE_ALLCAPS 
-option is set, then it will be presumed that an all-uppercase word is that 
-way for a reason, and will be left alone:
+(e.g. "DOOM APPROACHES!" would become "Doom Approaches!").  But, this
+doesn't allow for the possibilities such as an acronym in a title
+(e.g. "RAM Prices Plummet" ideally should not become "Ram Prices
+Plummet").  If the PRESERVE_ALLCAPS option is set, then it will be
+presumed that an all-uppercase word is that way for a reason, and
+will be left alone:
 
    print capitalize_title("ram more RAM down your throat", 
                        PRESERVE_ALLCAPS => 1);
@@ -493,12 +497,13 @@ way for a reason, and will be left alone:
 
 =head2 Preserving Any Usage of Uppercase for Mixed-case Words
 
-There are some other odd cases that are difficult to handle well, 
-notably mixed-case words such as "iMac", "CHiPs", and so on.
-For these purposes, a PRESERVE_ANYCAPS option has been provided which 
-presumes that any usage of uppercase is there for a reason, in which case
-the entire word should be passed through untouched.  With PRESERVE_ANYCAPS 
-on, only the case of all lowercase words will ever be adjusted: 
+There are some other odd cases that are difficult to handle well,
+notably mixed-case words such as "iMac", "CHiPs", and so on.  For
+these purposes, a PRESERVE_ANYCAPS option has been provided which
+presumes that any usage of uppercase is there for a reason, in which
+case the entire word should be passed through untouched.  With
+PRESERVE_ANYCAPS on, only the case of all lowercase words will ever
+be adjusted:
 
     print capitalize_title("TLAs i have known and loved", 
                        PRESERVE_ANYCAPS => 1);
@@ -534,22 +539,17 @@ PRESERVE_WHITESPACE option:
 As you might expect, there's more than one way to do this, 
 and these two pieces of code perform very similar functions:
 
-=over
-
    use Text::Capitalize 0.2;
    print capitalize_title($t), "\n";
 
    use Text::Autoformat;
    print autoformat{case => "highlight", right=>length($t)}, $t;
 
-=back
-
-(Note: supplying the length of the string as the "right
-margin" is a performance hack: this is much faster than
-plugging in an arbitrarily large number.  You need to do
-something like this because the "fill" parameter doesn't
-appear to work to turn off line-breaking, but possibly it
-will in the future.)
+Note: supplying the length of the string as the "right margin"
+is a performance hack: this is much faster than plugging in an
+arbitrarily large number.  There doesn't seem to be any other
+way of turning off line-breaking (e.g. by using the "fill"
+parameter) though possibly there will be in the future.
 
 As of this writing, "capitalize_title" has some advantages:
 
@@ -557,20 +557,16 @@ As of this writing, "capitalize_title" has some advantages:
 
 =item 1. 
 
-It works on characters outside the English 7-bit ASCII range,
-for example with my locale setting the ISO-8859-1 International 
-characters are handled correctly, so that "über maus" becomes 
-"Über Maus".
+It works on characters outside the English 7-bit ASCII
+range, for example with my locale setting (en_US) the
+ISO-8859-1 International characters are handled correctly,
+so that "über maus" becomes "Über Maus".
 
 =item 2. 
 
 Minor words following leading punctuation become upper case: 
 
-=over
-
-"...And Justice for All"
-
-=back
+   "...And Justice for All"
 
 =item 3. 
 
@@ -607,11 +603,11 @@ module does): it's recommended that you look into using it.
 Late breaking news: The second edition of the Perl Cookbook
 has just come out.  It now includes: "Properly Capitalizing
 a Title or Headline" as recipe 1.14.  You should
-familiarize yourself with if you want to become a true master
-of all title capitalization routines.
+familiarize yourself with this if you want to become a true 
+master of all title capitalization routines.
 
-(And the new recipe 1.13 includes a "randcap" program as an
-example, which as it happens does something like the
+(And I see that recipe 1.13 includes a "randcap" program as
+an example, which as it happens does something like the
 random_case function described below...)
 
 =head1 SPECIAL EFFECTS 
@@ -628,7 +624,7 @@ function, but does a slightly better job of producing something
 The difficulty is that there are differences between human
 perception of randomness and actual randomness.  Consider
 the fact that of the sixteen ways that the four letter word
-"WORD" can be capitalized, 3 of them are rather boring:
+"word" can be capitalized, three of them are rather boring:
 "word", "Word" and "WORD".  To make it less likely that
 scramble_case will produce dull output when you want "weird"
 output, a modified probability distribution has been used
@@ -640,12 +636,11 @@ correct ("Hm... red has come up a lot, I bet that black is
 going to come up now."). "Streaks" are much less likely 
 with scramble_case than with random_case.
 
-Additionally, with scramble_case the probability that first
-character of the input string will become upper-case has
-been tweaked to less than 50%.  (Future versions may apply
-this tweak on a per-word basis rather than just on a
+Additionally, with scramble_case the probability that the
+first character of the input string will become upper-case
+has been tweaked to less than 50%.  (Future versions may
+apply this tweak on a per-word basis rather than just on a
 per-string basis).
-
 
 There is also a function that scrambles capitalization on 
 a word-by-word basis called "zippify_case", which should produce output 
@@ -658,64 +653,66 @@ By default, this version of the module provides the two
 functions capitalize and capitalize_title.  Future versions 
 will have no further additions to the default export list.
 
-It is also possible to export:
+And the following routines may be exported: 
 
 =over
 
-=item 
-
-The list of minor words that capitalize_title uses by default to
-determine the exceptions to capitalization: @exceptions.
- 
-=item 
-
-The hash of allowed arguments (with defaults) that the
-capitalize_title function uses: %defaults-capitalize_title.
-
-=back
-
-=item
-scramble_case - function to scramble capitalization in 
+=item scramble_case - function to scramble capitalization in 
 a wEiRD loOOkInG wAy.  Supposed to look a little stranger than the simpler 
 random_case output
 
-=back
-
-=item
-random_case - function to randomize capitalization of each letter 
+=item random_case - function to randomize capitalization of each letter 
 in the string.  Compare to "scramble_case"
 
-=back
-
-=item
-
-zippify_case - a function like "scramble_case" that acts on
+=item zippify_case - a function like "scramble_case" that acts on
 a word-by-word basis (Somewhat LIKE this, YOU know?).
 
 =back
 
+It is also possible to export the following variables:
 
+=over
 
+=item @exceptions - The list of minor words that
+capitalize_title uses by default to determine the exceptions to
+capitalization.
+
+=item %defaults-capitalize_title - The hash of allowed arguments
+(with defaults) that the capitalize_title function uses.
+
+=back
 
 =head1 BUGS 
 
-  (1) In capitalize_title, quoted sentence terminators are treated 
-  as actual sentence breaks, e.g. in this case: 
+1. In capitalize_title, quoted sentence terminators are
+treated as actual sentence breaks, e.g. in this case:
 
      'say "yes but!" and "know what?"'
 
-  The program sees the ! and effectively treats this as two
-  separate sentences: the word "but" becomes "But" (under
-  the rule that last words must always be uppercase, even if
-  they're on the exception list) and the word "and" becomes
-  "And" (under the first word rule).
+The program sees the ! and effectively treats this as two
+separate sentences: the word "but" becomes "But" (under the
+rule that last words must always be uppercase, even if they're
+on the exception list) and the word "and" becomes "And" (under
+the first word rule).
 
-  (2) Currently there's no good way to automatically handle
-  names like "McCoy".  Consider the difficulty of
-  disambiguating "MacAdam Rode" from "Macadam Roads".  If
-  you need to solve problems like this, consider using the
-  case_surname function of Lingua::En::NameParse.
+2. Currently there's no good way to automatically handle
+names like "McCoy".  Consider the difficulty of disambiguating
+"Macadam Roads" from "MacAdam Rode".  If you need to solve
+problems like this, look into using the case_surname function of
+Lingua::En::NameParse.
 
+3. In general, Text::Capitalize is a very parochial
+English oriented module, that looks like it belongs in the
+"Lingua::En::*" tree.  Someday it may become more general.
+
+4. There's currently no way of doing a PRESERVE_ANYCAPS
+that *also* adjusts capitalization of words on the exception
+list, so that "iMac Or iPod" would become "iMac or iPod".
+
+5. Tests may fail with the wrong locale setting (e.g. if the
+environment variable LANG is set to "C" instead of "en_US").  
+Ideally, this should first determine the names of the available 
+locales, and switch to an appropriate one before running the tests.
 
 =head1 SEE ALSO
 
@@ -723,9 +720,11 @@ a word-by-word basis (Somewhat LIKE this, YOU know?).
 
   "The Perl Cookbook", second edition, recipes 1.13 and 1.14
 
+  Lingua::En::NameParse
+
 =head1 VERSION
 
-Version 0.3
+Version 0.4
 
 =head1 AUTHORS
 
@@ -749,3 +748,5 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself. 
 
 =cut
+
+

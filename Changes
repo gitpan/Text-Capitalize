@@ -9,4 +9,17 @@ Revision history for Perl extension Text::Capitalize.
 		-AX -n Text::Capitalize
       capitalize_title function added by Joseph Brenner
 
+0.03 
+     Changed stucture of driving loop for capitalize_title,
+     fixed a few bugs and (hopefully) improved readability.
 
+     Added "special effects" functions: scramble_case, random_case, zippify_case
+
+0.04 Thu Sep 18 17:50:13 2003, Thu Feb 17, 2005  1:13 PM
+     Cleaned up documentation slightly, belatedly added the
+     above remark "0.03", which describes the version 0.3 release.
+
+     Fixed bad bug: all routines now use localized $_, to
+     keep from clobbering $_ in calling code.
+
+     Added tests for random_case and scramble_case.

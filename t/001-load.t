@@ -4,12 +4,13 @@
 #########################
 
 use FindBin qw($Bin);
-use lib ("$Bin/../t/lib"); 
-
 use Test::More tests => 2;
-BEGIN { use_ok('Text::Capitalize');
+BEGIN { 
+        use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib"); 
+        use_ok('Text::Capitalize');
         use_ok('__title_tests');
        };
 
 #########################
+
 
