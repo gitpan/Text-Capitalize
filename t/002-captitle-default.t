@@ -19,5 +19,5 @@ plan tests => scalar keys %expect_capitalize_title_default;
 
 foreach $in (keys %expect_capitalize_title_default) { 
    $out = $expect_capitalize_title_default{$in};
-   is ($out, capitalize_title($in), "test: $in");
+   is (capitalize_title($in), $out, "test: $in");
 }

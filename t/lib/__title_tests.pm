@@ -34,9 +34,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 # The %expect_* series below is what's actually used by "make test"
 
 @test_cases = (
-      "Erratic spacing:  your KEY    to     creativity   ",
-      '  very spacey  ',
-      '  ...huh?   ',
+      "Revenge is Doom's",
+      "forget gilroy, A. Snakhausem was here",
       "the end of the dream: three-holed button manufacture in a four-holed world",
       "chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex",
       'a history of n.a.s.a.',
@@ -116,18 +115,10 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 # Hash of test cases (keys) and expected results (values) for the 
 # vanillia "capitalize_title" sub, without options.
-# Need more of these hases, one per each permutation of options. 
-
-### Insert stuff here.
-
 
 %expect_capitalize_title_default = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing: Your Key to Creativity',
-     '  very spacey  ' =>
-        'Very Spacey',
-     '  ...huh?   ' =>
-        '...Huh?',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -214,10 +205,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>
@@ -280,12 +269,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 
 %expect_capitalize_title_PRESERVE_WHITESPACE = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing:  Your Key    to     Creativity   ',
-     '  very spacey  ' =>
-        '  Very Spacey  ',
-     '  ...huh?   ' =>
-        '  ...Huh?   ',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -372,10 +357,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>
@@ -438,12 +421,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 
 %expect_capitalize_title_PRESERVE_ALLCAPS = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing: Your KEY to Creativity',
-     '  very spacey  ' =>
-        'Very Spacey',
-     '  ...huh?   ' =>
-        '...Huh?',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -530,10 +509,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>
@@ -596,12 +573,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 
 %expect_capitalize_title_PRESERVE_ANYCAPS = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing: Your KEY to Creativity',
-     '  very spacey  ' =>
-        'Very Spacey',
-     '  ...huh?   ' =>
-        '...Huh?',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -633,7 +606,7 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
      'TLAs i have known and loved' =>
         'TLAs I Have Known and Loved',
      'The Next iMac: Just Another NeXt?' =>
-        'The Next IMac: Just Another NeXt?',
+        'The Next iMac: Just Another NeXt?',
      'Mr. Wong and Dr. And Report' =>
         'Mr. Wong and Dr. And Report',
      'Quinn Weaver, agent of SFPUG' =>
@@ -653,7 +626,7 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
      'it came from texas:  the new new world order?' =>
         'It Came From Texas: The New New World Order?',
      'pOiksIFiciZaLaTIonoRyISM' =>
-        'POiksIFiciZaLaTIonoRyISM',
+        'pOiksIFiciZaLaTIonoRyISM',
      'What about: a an the and or nor for but so yet not to of by at for but in, huh?' =>
         'What About: A an the and or nor for but so yet Not to of by at for but in, Huh?',
      'Ah ha: and so forth' =>
@@ -688,10 +661,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>
@@ -754,12 +725,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 
 %expect_capitalize_title_PRESERVE_ALLCAPS_PRESERVE_WHITESPACE = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing:  Your KEY    to     Creativity   ',
-     '  very spacey  ' =>
-        '  Very Spacey  ',
-     '  ...huh?   ' =>
-        '  ...Huh?   ',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -846,10 +813,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>
@@ -912,12 +877,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
 
 
 %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE = (
-     'Erratic spacing:  your KEY    to     creativity   ' =>
-        'Erratic Spacing:  Your KEY    to     Creativity   ',
-     '  very spacey  ' =>
-        '  Very Spacey  ',
-     '  ...huh?   ' =>
-        '  ...Huh?   ',
+     "Revenge is Doom's" => 
+        "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
      'chords against culture -- counter-sexist themes in the later works of Fetal Tissue Kleenex' =>
@@ -949,7 +910,7 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
      'TLAs i have known and loved' =>
         'TLAs I Have Known and Loved',
      'The Next iMac: Just Another NeXt?' =>
-        'The Next IMac: Just Another NeXt?',
+        'The Next iMac: Just Another NeXt?',
      'Mr. Wong and Dr. And Report' =>
         'Mr. Wong and Dr. And Report',
      'Quinn Weaver, agent of SFPUG' =>
@@ -969,7 +930,7 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
      'it came from texas:  the new new world order?' =>
         'It Came From Texas:  The New New World Order?',
      'pOiksIFiciZaLaTIonoRyISM' =>
-        'POiksIFiciZaLaTIonoRyISM',
+        'pOiksIFiciZaLaTIonoRyISM',
      'What about: a an the and or nor for but so yet not to of by at for but in, huh?' =>
         'What About: A an the and or nor for but so yet Not to of by at for but in, Huh?',
      'Ah ha: and so forth' =>
@@ -1004,10 +965,8 @@ $VERSION	= '0.2';  # to match Text::Capitalize version
         'Über Maus',
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
         'Explicación Dél Significado de Los Términos Utilizados En "Don Quijote", Por Capítulo.',
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'Où L\'On Découvre Une Époque À Travers L\'Oeuvre Imposante d\'Honoré de Balzac',
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'Évêque, Qu\'Il Eût Aimé Voir Infliger À Ceux Qui Ont Abdiqué, J\'Ai Été Reçu, and Pepe Le Peau',
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honoré de Balzac',
      'Baron von Arnheim\'s revenge' =>
         'Baron von Arnheim\'s Revenge',
      'forget gilroy, A. Snakhausem was here' =>

@@ -19,7 +19,7 @@ plan tests => scalar keys %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHI
 
 foreach $in (keys %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE) { 
    $out = $expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE{$in};
-   is ($out, capitalize_title($in, 
-                              PRESERVE_ANYCAPS => 1,
-                              PRESERVE_WHITESPACE => 1), "test: $in");
+   is (capitalize_title($in, 
+                        PRESERVE_ANYCAPS => 1,
+                        PRESERVE_WHITESPACE => 1), $out, "test: $in");
 }
