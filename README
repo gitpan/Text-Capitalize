@@ -1,47 +1,32 @@
-NAME
-    Text::Capitalize - capitalize strings ("uGly STrIngS" becomes "Cool
-    Strings")
+Text/Capitalize version 0.02
+============================
 
-SYNOPSIS
-       use Text::Capitalize;
-       print &capitalize ("...and justice for all"), "\n";
-       print &capitalize ("kill 'em all"), "\n";
+Text::Capitalize provides the functions capitalize() and
+capitalize_title(), which can be used to transform 
+lines of text into relatively presentable titles. 
 
-DESCRIPTION
-    Provides title-like formatting for strings. Originally created to put
-    pretty looking names to MP3 files (first-letter-uppercase). Title-like
-    formatting consists in converting strings to lowercase and then
-    uppercase first letters of each word.
-
-    Examples of title formatting:
-
-    'overkill' becomes 'Overkill'
-    'KiLLiNG TiMe' becomes 'Killing Time'
-USAGE
-    Text::Capitalize provides only one sub-routine to process strings:
-
-    capitalize (string): returns re-formatted string.
 INSTALLATION
-    Just execute:
 
-       perl Makefile.PL
-       make
+To install this module type the following:
 
-    And, as root (su):
+   perl Makefile.PL
+   make
+   make test
+   make install
 
-       make install
+DEPENDENCIES
 
-VERSION
-    Version 0.1
+This module requires these other modules and libraries:
 
-AUTHOR
-       Stanislaw Y. Pusep
-          E-Mail:   stanis@linuxmail.org
-          ICQ UIN:  11979567
-          Homepage: http://sysdlabs.hypermart.net/
+  The "use locale" pragma, standard with perl as of version 5.004.
+  Test::More is required to run "make test".
 
-COPYRIGHT
-    Copyright (c) 1997-2002 by Stas. All rights reserved. This program is
-    free software; you can redistribute it and/or modify it under the same
-    terms as Perl itself.
+COPYRIGHT AND LICENCE
+
+Put the correct copyright and licence information here.
+
+Copyright (C) 2003 Joseph Brenner
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself. 
 
