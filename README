@@ -1,0 +1,47 @@
+NAME
+    Text::Capitalize - capitalize strings ("uGly STrIngS" becomes "Cool
+    Strings")
+
+SYNOPSIS
+       use Text::Capitalize;
+       print &capitalize ("...and justice for all"), "\n";
+       print &capitalize ("kill 'em all"), "\n";
+
+DESCRIPTION
+    Provides title-like formatting for strings. Originally created to put
+    pretty looking names to MP3 files (first-letter-uppercase). Title-like
+    formatting consists in converting strings to lowercase and then
+    uppercase first letters of each word.
+
+    Examples of title formatting:
+
+    'overkill' becomes 'Overkill'
+    'KiLLiNG TiMe' becomes 'Killing Time'
+USAGE
+    Text::Capitalize provides only one sub-routine to process strings:
+
+    capitalize (string): returns re-formatted string.
+INSTALLATION
+    Just execute:
+
+       perl Makefile.PL
+       make
+
+    And, as root (su):
+
+       make install
+
+VERSION
+    Version 0.1
+
+AUTHOR
+       Stanislaw Y. Pusep
+          E-Mail:   stanis@linuxmail.org
+          ICQ UIN:  11979567
+          Homepage: http://sysdlabs.hypermart.net/
+
+COPYRIGHT
+    Copyright (c) 1997-2002 by Stas. All rights reserved. This program is
+    free software; you can redistribute it and/or modify it under the same
+    terms as Perl itself.
+
