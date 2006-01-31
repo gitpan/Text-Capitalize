@@ -19,7 +19,7 @@ $DEBUG = 0;
                      random_case
                      zippify_case
                     ); 
-$VERSION	= '0.4';
+$VERSION	= '0.5';
 
 # Define the pattern to match "exceptions": the minor words 
 # that don't usually get capitalized in titles (used by capitalize_title)
@@ -212,7 +212,7 @@ sub capitalize_title {
 
   return $new_string;
 } # end sub capitalize_title
-
+ 
 sub scramble_case { 
    # Function to provide a special effect: sCraMBliNg tHe CaSe
    local $_;
@@ -653,7 +653,7 @@ By default, this version of the module provides the two
 functions capitalize and capitalize_title.  Future versions 
 will have no further additions to the default export list.
 
-And the following routines may be exported: 
+Optionally, the following functions may also be exported:  
 
 =over
 
@@ -709,10 +709,6 @@ English oriented module, that looks like it belongs in the
 that *also* adjusts capitalization of words on the exception
 list, so that "iMac Or iPod" would become "iMac or iPod".
 
-5. Tests may fail with the wrong locale setting (e.g. if the
-environment variable LANG is set to "C" instead of "en_US").  
-Ideally, this should first determine the names of the available 
-locales, and switch to an appropriate one before running the tests.
 
 =head1 SEE ALSO
 
@@ -724,7 +720,7 @@ locales, and switch to an appropriate one before running the tests.
 
 =head1 VERSION
 
-Version 0.4
+Version 0.5
 
 =head1 AUTHORS
 

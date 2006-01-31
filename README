@@ -22,9 +22,6 @@ This module requires these other modules and libraries:
   Test::More is required to run "make test".
 
 COPYRIGHT AND LICENCE
-
-Put the correct copyright and licence information here.
-
 Copyright (C) 2003 Joseph Brenner
 
 This library is free software; you can redistribute it and/or modify

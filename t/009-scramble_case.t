@@ -17,27 +17,43 @@ BEGIN {
 use Text::Capitalize 0.4 qw(scramble_case);
 use __title_tests qw(%expect_scramble_case); 
 
+use Test::Locale::Utils qw(:all);
+
+my @test_cases = keys %expect_scramble_case;
+my @exchars = extract_extended_chars(\@test_cases);
+my $i18n = internationalized_locale(@exchars);
+my $exchars_str = join '', @exchars;
+my $exchars_rule = qr{[$exchars_str]};
+
 plan tests => scalar( keys( %expect_scramble_case ) ) + 1;
             
 #########################
 
 {
- # seeding with a known value, should get repeatable sequence from rand
+  # seeding with a known value, should get repeatable sequence from rand
   srand(666);
- # Also need to sort the test cases, to get the same order that 
- # was used in generating the answer key.  
+  # Also need to sort the test cases, to get the same order that 
+  # was used in generating the answer key.  
 
   my ($in, $out, $out_expected);
-#  open my $tfh, ">", "/home/doom/End/Cave/CapitalizeTitle/tmp/tempoutput-randomcase.$$" or die $!;
-  foreach $in (sort keys %expect_scramble_case) {  # must sort for same order as original test generation
-    $out_expected = $expect_scramble_case{$in};
-    $out = scramble_case($in);
+  #  open my $tfh, ">", "/home/doom/End/Cave/CapitalizeTitle/tmp/tempoutput-randomcase.$$" or die $!;
+  foreach $in (sort keys %expect_scramble_case) { # must sort for same order as original test generation
+  SKIP: {
+      skip "This locale can't deal with i18n chars in string: $in", 1, 
+        if (
+            ($in =~ /$exchars_rule/) && 
+            not $i18n 
+           );
 
-#    $in =~ s/'/\\'/g;
-#    $out =~ s/'/\\'/g;
-#    print $tfh "     '$in' =>\n        '$out',\n";
+      $out_expected = $expect_scramble_case{$in};
+      $out = scramble_case($in);
 
-    is ($out, $out_expected, "test: $in");
+      #    $in =~ s/'/\\'/g;
+      #    $out =~ s/'/\\'/g;
+      #    print $tfh "     '$in' =>\n        '$out',\n";
+
+      is ($out, $out_expected, "test: $in");
+    }
   }
 }
 

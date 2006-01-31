@@ -23,3 +23,9 @@ Revision history for Perl extension Text::Capitalize.
      keep from clobbering $_ in calling code.
 
      Added tests for random_case and scramble_case.
+
+0.05                            Tue Jan 31, 2006 12:24 AM
+     Bug fix release for the test suite: if the current 
+     locale can't deal with the international characters 
+     use in some of the test cases, those particular test 
+     cases will be skipped. 
