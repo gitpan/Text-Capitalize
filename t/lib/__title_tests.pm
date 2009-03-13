@@ -1,6 +1,7 @@
 package __title_tests;
 
 # Test cases for Text::Capitalize
+# DEPRECATED
 
 require 5.000;
 
@@ -73,7 +74,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
       "and/or testified it shall be",
       "...nor lost, nor found",
       "Ask not",
-      "'for not!', he said.", 
+      "'for not!', he said.",
       "\"but so!\", sayeth I",
       'The wind whispers "But!"',
       'say "but!", say what?',
@@ -100,16 +101,16 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
       "And so they tramped on through the night. Tramp. Tramp. Tramp. Tramp. Tramp. Tramp. Tramp..." ,
       "And more. And still more.",
       "mo' beta-testing",
-      'a laboratory of the open fields', 
+      'a laboratory of the open fields',
       'Scientific Study of the So-called Psychical Processes in the Higher Animals',
       'The Running-Down of the Universe',
       'In the beginning... was the global-set-key',
       'how should one read a book?',
       'of beauty',
       'on style',
-      "As I Ebb'd with the Ocean of Life",        
+      "As I Ebb'd with the Ocean of Life",
       "When I Heard the Learn'd Astronomer",
-      "From Pent-Up Aching Rivers", 
+      "From Pent-Up Aching Rivers",
       "One's Self I Sing",
       "BEAT! BEAT! DRUMS!",
       "The Wound-Dresser",
@@ -118,13 +119,13 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 );
 
 
-# Hash of test cases (keys) and expected results (values) for the 
+# Hash of test cases (keys) and expected results (values) for the
 # vanillia "capitalize_title" sub, without options.
 
 %expect_capitalize_title_default = (
      'This And ThAt' =>
         'This and That',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -278,7 +279,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 %expect_capitalize_title_PRESERVE_WHITESPACE = (
      'This And ThAt' =>
         'This and That',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -432,7 +433,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 %expect_capitalize_title_PRESERVE_ALLCAPS = (
      'This And ThAt' =>
         'This and That',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -586,7 +587,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 %expect_capitalize_title_PRESERVE_ANYCAPS = (
      'This And ThAt'=>
         'This And ThAt',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -740,7 +741,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 %expect_capitalize_title_PRESERVE_ALLCAPS_PRESERVE_WHITESPACE = (
      'This And ThAt' =>
         'This and That',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -894,7 +895,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE = (
      'This And ThAt' =>
         'This And ThAt',
-     "Revenge is Doom's" => 
+     "Revenge is Doom's" =>
         "Revenge Is Doom's",
      'the end of the dream: three-holed button manufacture in a four-holed world' =>
         'The End of the Dream: Three-Holed Button Manufacture in a Four-Holed World',
@@ -1045,7 +1046,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
 );
 
 
-# Hash of test cases (keys) and expected results (values) for 
+# Hash of test cases (keys) and expected results (values) for
 # random_case, when seeded with a known value: srand(666)
 
 %expect_random_case = (
@@ -1199,7 +1200,7 @@ $VERSION	= '0.4';  # to match Text::Capitalize version
         'ÜbeR mAuS',
 );
 
-# Hash of test cases (keys) and expected results (values) for 
+# Hash of test cases (keys) and expected results (values) for
 # scramble_case, when seeded with a known value: srand(666)
 
 %expect_scramble_case = (
