@@ -47,7 +47,7 @@ use strict;
 use warnings;
 use Carp;
 use Data::Dumper;
-use List::MoreUtils qw( all );
+# use List::MoreUtils qw( all ); # Not in core, so writing my own "all"
 
 my $DEBUG = 0;
 
@@ -59,6 +59,7 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
   internationalized_locale
   is_locale_international
   define_sample_i18n_chars
+  all_true
 ) ] );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(  );
@@ -154,7 +155,9 @@ sub is_locale_international {
   }
   print STDERR "internationalized_locale: char status: ",
     join " ", @checks, "\n" if ($DEBUG) ;
-  my $okay = all { ($_) } @checks;
+#  my $okay = all { ($_) } @checks;
+  my $okay = all_true( \@checks );
+
   return $okay;
 }
 
@@ -164,6 +167,9 @@ sub is_locale_international {
 Returns a short list of pairs of extended characters,
 pairing a lowercase form with an uppercase one
 (an aref of arefs).
+
+These were selected because they're the only extended
+characters in use in the test cases for Text::Capitalize.
 
 =cut
 
@@ -180,6 +186,30 @@ sub define_sample_i18n_chars {
 }
 
 
+
+=item all_true
+
+
+Example usage:
+
+  my $okay = all_true( \@checks );
+
+This is an alternative to List::MoreUtils "all",
+written to avoid a non-core dependency.
+
+=cut
+
+sub all_true {
+  my $aref = shift;
+  my $flag = 1;
+  foreach my $item ( @{ $aref } ) {
+    unless ($item) {
+      $flag = 0;
+      last;
+    }
+  }
+  return $flag;
+}
 
 
 
