@@ -14,19 +14,21 @@ use FindBin qw($Bin);
 BEGIN {
   use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib");
 };
-# use __title_tests qw(%expect_scramble_case);
 
-my $cases1 = define_test_cases();
-my $cases2 = define_test_cases_i18n();
-my $expect_scramble_case = { %{ $cases1  }, %{ $cases2 } };
+my $basic_test_cases = define_basic_test_cases();
+my $i18n_test_cases = define_basic_test_cases_i18n();
+my $basic_count = scalar( keys( %{ $basic_test_cases } ) );
+my $i18n_count  = scalar( keys( %{ $i18n_test_cases } ) );
+my $total = $basic_count + $i18n_count + 1;
 
+# use Test::More tests => 77;
 use Test::More;
-plan tests => scalar( keys( %{ $expect_scramble_case } ) ) + 1;
+plan tests => $total;
 
 use Text::Capitalize 0.4 qw(scramble_case);
 use Test::Locale::Utils qw(:all);
 
-my $i18n = is_locale_international();
+my $i18n_system = is_locale_international();
 
 {
   # seeding with a known value, should get repeatable sequence from rand
@@ -34,27 +36,25 @@ my $i18n = is_locale_international();
   # Note: need to sort the test cases, to get the same order that
   # was used in generating the answer key.
 
-  my ($in, $out, $out_expected);
-  foreach $in (sort keys %{ $cases1 }) {
-    $out_expected = $cases1->{$in};
-    $out = scramble_case($in);
+  foreach my $case (sort keys %{ $basic_test_cases }) {
+    my $expected = $basic_test_cases->{ $case };
+    my $result   = scramble_case( $case );
 
-    record_testcase( $in, $out ) if $TESTCASEGEN;
+    record_testcase( $case, $result ) if $TESTCASEGEN;
 
-    is ($out, $out_expected, "test: $in");
+    is ($result, $expected, "test: $case");
   }
 
   SKIP: {
-      my $i18n_count = scalar( keys( %{ $cases2 } ) );
-      skip "Can't test strings with international chars", $i18n_count, if not $i18n;
+      skip "Can't test strings with international chars", $i18n_count, unless $i18n_system;
 
-      foreach $in (sort keys %{ $cases2 }) {
-        $out_expected = $cases2->{$in};
-        $out = scramble_case($in);
+      foreach my $case (sort keys %{ $i18n_test_cases }) {
+        my $expected = $i18n_test_cases->{$case};
+        my $result   = scramble_case($case);
 
-        record_testcase( $in, $out ) if $TESTCASEGEN;
+        record_testcase( $case, $result ) if $TESTCASEGEN;
 
-        is ($out, $out_expected, "test: $in");
+        is ($result, $expected, "test: $case");
     }
   }
 }
@@ -87,7 +87,7 @@ sub record_testcase {
 # Hash of test cases (keys) and expected results (values) for
 # scramble_case, when seeded with a known value: srand(666)
 
-sub define_test_cases {
+sub define_basic_test_cases {
 
   my %expect_scramble_case = (
      '' =>
@@ -233,18 +233,22 @@ sub define_test_cases {
   return \%expect_scramble_case;
 };
 
-sub define_test_cases_i18n {
+sub define_basic_test_cases_i18n {
   my %expect_scramble_case = (
      'Didaktische Überlegungen/Erfahrungsbericht über den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>
-        'dIdaKtISchE ÜbERLeGUngEN/ErFahrUnGsbERIcht üBer DeN CoMpUtEREInsATz im GeIsTesWissENscHAFTlIchEN unTERRicHt AM BSP. "hIStoRIsChe zEITuNg"',
+     'dIdaKtISchE ÜbERLeGUngEN/ErFahrUnGsbERIcht üBer DeN CoMpUtEREInsATz im GeIsTesWissENscHAFTlIchEN unTERRicHt AM BSP. "hIStoRIsChe zEITuNg"',
+
      'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
-        'exPlIcAción déL SIgniFIcAdo De loS téRmiNoS UtiLiZadoS en "don QUIJoTE", pOr CAPítULO.',
+     'exPlIcAciÓn dÉL SIgniFIcAdo De loS tÉRmiNoS UtiLiZadoS en "don QUIJoTE", pOr CAPÍtULO.',
+
      'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-        'où l\'on déCouVRE uNE éPOQUe à traVErs l\'OeuvRE iMPOSAnte d\'hONoré De bAlzac',
+     'oÙ l\'on déCouVRE uNE ÉPOQUe à traVErs l\'OeuvRE iMPOSAnte d\'hONorÉ De bAlzac',
+
      'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-        'évêQue, Qu\'iL eûT AIMé vOiR inflIgER à ceux quI onT AbdIQué, J\'aI éTé REçU, and pepe lE peaU',
+     'évÊQue, Qu\'iL eûT AIMÉ vOiR inflIgER à ceux quI onT AbdIQué, J\'aI éTé REçU, and pepe lE peaU',
+
      'über maus' =>
-        'übeR mAuS',
+     'übeR mAuS',
   );
   return \%expect_scramble_case;
 }

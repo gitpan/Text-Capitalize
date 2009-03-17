@@ -12,21 +12,24 @@ BEGIN {
   use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib");
 };
 
-my $cases1 = define_test_cases();
-my $cases2 = define_test_cases_i18n();
-my $expect_capitalize_title = { %{ $cases1  }, %{ $cases2 } };
+my $basic_test_cases = define_basic_test_cases();
+my $i18n_test_cases = define_basic_test_cases_i18n();
+my $basic_count = scalar( keys( %{ $basic_test_cases } ) );
+my $i18n_count  = scalar( keys( %{ $i18n_test_cases } ) );
+my $total = $basic_count + $i18n_count + 1;
+
 # use Test::More tests => 77;
 use Test::More;
-plan tests => scalar( keys( %{ $expect_capitalize_title } ) ) + 1;
+plan tests => $total;
 
 use Text::Capitalize 0.4 qw(capitalize_title);
 use Test::Locale::Utils qw(:all);
 
-my $i18n = is_locale_international();
+my $i18n_system = is_locale_international();
 
 {
-  foreach my $case (sort keys %{ $cases1 }) {
-    my $expected = $cases1->{ $case };
+  foreach my $case (sort keys %{ $basic_test_cases }) {
+    my $expected = $basic_test_cases->{ $case };
     my $result = capitalize_title($case,
                            PRESERVE_ANYCAPS => 1,
                            PRESERVE_WHITESPACE => 1);
@@ -34,10 +37,9 @@ my $i18n = is_locale_international();
     is ($result, $expected, "test: $case");
   }
   SKIP: {
-      my $i18n_count = scalar( keys( %{ $cases2 } ) );
-      skip "Can't test strings with international chars", $i18n_count, if not $i18n;
-      foreach my $case (sort keys %{ $cases2 }) {
-        my $expected = $cases2->{ $case };
+      skip "Can't test strings with international chars", $i18n_count, unless $i18n_system;
+      foreach my $case (sort keys %{ $i18n_test_cases }) {
+        my $expected = $i18n_test_cases->{ $case };
         my $result = capitalize_title($case,
                            PRESERVE_ANYCAPS => 1,
                            PRESERVE_WHITESPACE => 1);
@@ -65,7 +67,7 @@ my $i18n = is_locale_international();
 
 # Hashref of test cases (keys) and expected results (values) for the
 # vanillia "capitalize_title" sub, without options.
-sub define_test_cases {
+sub define_basic_test_cases {
 
   my %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE = (
      'This And ThAt' =>
@@ -215,7 +217,7 @@ sub define_test_cases {
 }
 
 
-sub define_test_cases_i18n {
+sub define_basic_test_cases_i18n {
 
   my %expect_capitalize_title_PRESERVE_ANYCAPS_PRESERVE_WHITESPACE = (
      'Didaktische Überlegungen/Erfahrungsbericht über den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>

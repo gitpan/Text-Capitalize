@@ -19,7 +19,7 @@ $DEBUG = 0;
                      random_case
                      zippify_case
                     );
-$VERSION	= '0.7';
+$VERSION	= '0.8';
 
 # Define the pattern to match "exceptions": the minor words
 # that don't usually get capitalized in titles (used by capitalize_title)

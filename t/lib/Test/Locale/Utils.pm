@@ -8,12 +8,35 @@ Test::Locale::Utils - utilities for writing tests involving international charac
 
 =head1 SYNOPSIS
 
-### TODO revise
+   use Test::More;
+   use Test::Locale::Utils qw( is_locale_international );
+
+   my $i18n_test_cases = {
+     'über maus' =>
+     'Über Maus',
+
+     'l\'oeuvre imposante d\'Honoré de Balzac' =>
+     'L\'Oeuvre Imposante d\'Honoré de Balzac',
+   }
+   my $i18n_test_count = scalar( keys( %{ $i18n_test_cases } ) );
+
+   my $i18n_system = is_locale_international();
+   SKIP: {
+      skip "Can't test strings with international chars", $i18n_count, unless $i18n_system;
+      foreach my $case (sort keys %{ $i18n_test_cases }) {
+        my $expected = $i18n_test_cases->{ $case };
+        my $result   = capitalize_title( $case );
+        is ($result, $expected, "Testing: $case");
+      }
+   }
+
+
+  # Older style (deprecated):
 
    use Test::More;
    use Test::Locale::Utils qw(:all);
    my @exchars = extract_extended_chars(\@strings);
-   my $internat = internationalized_locale(@exchars);
+   my $internat = internationalized_locale(@exchars);  # Deprecated
    my $exchars_str = join '', @exchars;
    my $exchars_rule = qr{[$exchars_str]};
 
@@ -69,8 +92,8 @@ our $VERSION = '0.01';
 =item extract_extended_chars
 
 Given a reference to an array of strings, returns a list of all
-extended characters that have appeared at least once in the
-strings.
+extended characters (i.e. characters with the eigth-bit set) that
+have appeared at least once in the strings.
 
 =cut
 
@@ -91,7 +114,7 @@ sub extract_extended_chars  {
 
 =item  internationalized_locale
 
-DEPRECATED.
+DEPRECATED.  use L<is_locale_international> instead.
 
 Given an array of extended characters that you care about,
 this code will check to make sure that the current locale
@@ -127,9 +150,9 @@ sub internationalized_locale {
 
 =item  is_locale_international
 
-Looks at the behavior of uc and lc with a small sample of
-international characters: this just checks if the "extended
-characters" of latin-1 and friends have an upper and lower form
+Looks at the behavior of uc and lc for a small sample of
+"international characters": this simply checks if the extended
+characters of latin-1 and friends have an upper and lower form
 defined as expected.
 
 =cut
@@ -169,7 +192,7 @@ pairing a lowercase form with an uppercase one
 (an aref of arefs).
 
 These were selected because they're the only extended
-characters in use in the test cases for Text::Capitalize.
+characters in use in the test cases for L<Text::Capitalize>.
 
 =cut
 
@@ -195,7 +218,8 @@ Example usage:
   my $okay = all_true( \@checks );
 
 This is an alternative to List::MoreUtils "all",
-written to avoid a non-core dependency.
+written to avoid a non-core dependency for the
+L<Text::Capitalize> tests.
 
 =cut
 
@@ -211,16 +235,6 @@ sub all_true {
   return $flag;
 }
 
-
-
-
-
-
-
-
-
-
-
 1;
 __END__
 
@@ -235,26 +249,24 @@ There's no definitive way to get a listing of all available
 locales on a system.  The right way to do it varies from platform
 to platform.  There's no definitive way of finding out what
 platform you're on: You can check ^O, but you need to parse it
-yourself (and obvious tricks you might use like matching for
+yourself (and that's not as easy as you might think: matching for
 /win/ to see if you're on a windows platform will get confused in
 cases like "cygwin").  There's no definitive list of all possible
-values of ^O (or if there is, I have not been able to discover
-it).  There are some useful tricks in the POSIX module that can
-help with these issues, but you can't count on every system that
+values of ^O.  There are some useful tricks in the POSIX module that
+can help with these issues, but you can't count on every system that
 perl runs on being POSIX compliant, (and like I just said,
 checking what kind of platform you're on is a little trickier
 than you'd think).
 
 This little module is an attempt at cutting the Gordian Knot
-represented by this cluster of problems, at least
-as far as the automated tests for Text::Capitalize are concerned.
+represented by this cluster of problems, at least as far as
+the automated tests for L<Text::Capitalize> are concerned.
 
-Since it's difficult to determine the Right Way to do
-cross-platform checks of string handling including international
-characters, instead I use some simple operational tests to see if
-the system does what's expected with the international
-characters, and if not, the tests using those characters
-will be skipped.
+Since it's difficult to determine the Right Way to do cross-platform
+checks of string handling including international characters,
+instead I use some simple operational tests to see if the system
+does what's expected with the international characters, and if not,
+the tests using those characters will be skipped.
 
 =head1 SEE ALSO
 
