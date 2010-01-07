@@ -1,8 +1,8 @@
-Capitalize.pm
+Build.PL
 Changes
-Makefile.PL
 MANIFEST
 README
+lib/Text/Capitalize.pm
 t/001-load.t
 t/002-captitle-default.t
 t/003-captitle-preserve_whitespace.t
@@ -13,5 +13,9 @@ t/007-captitle-preserve_anycaps_and_whitespace.t
 t/008-random_case.t
 t/009-scramble_case.t
 t/lib/Test/Locale/Utils.pm
-META.yml                                 Module meta-data (added by MakeMaker)
-
+t/lib/Test/Locale/t/000-all_true-Test-Locale-Utils-private.t
+t/pod-coverage.t
+t/pod.t
+t/boilerplate.t
+Makefile.PL
+META.yml

@@ -1,4 +1,4 @@
-Revision history for Perl extension Text::Capitalize.
+Revision history for Text-Capitalize
 
 0.01
       original version; created by Stanislaw Y. Puspep.
@@ -34,3 +34,6 @@ Revision history for Perl extension Text::Capitalize.
      All bug fix releases for the tests, redesigning them
      to make them insensitive to the set-up of locales.
 
+0.09                            Tue Jan  5 16:29:58 2010
+     Revised the documentation.  Switched to Module::Build.
+     Refactored some routines.

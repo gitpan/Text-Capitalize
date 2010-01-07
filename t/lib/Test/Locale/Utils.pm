@@ -68,6 +68,7 @@ on request (and all may be requested with the ":all" tag).
 use 5.006;
 use strict;
 use warnings;
+use locale;
 use Carp;
 use Data::Dumper;
 # use List::MoreUtils qw( all ); # Not in core, so writing my own "all"
@@ -83,6 +84,9 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
   is_locale_international
   define_sample_i18n_chars
   all_true
+  is_uc_and_lc_internationalized
+  is_ucfirst_internationalized
+
 ) ] );
 our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(  );
@@ -110,6 +114,149 @@ sub extract_extended_chars  {
     }
     my @exchars = sort keys %seen;
     return @exchars;
+}
+
+=item is_locale_international
+
+Does some crude checks of uc, lc, and ucfirst to see if they
+handle some international characters (latin-1) correctly,
+or at least well enough that we can expect the international
+character test cases of Text::Capitalize to have meaningful
+results.
+
+=cut
+
+sub is_locale_international {
+  my $result =
+    all_true(
+             [  is_uc_and_lc_internationalized(),
+                is_ucfirst_internationalized(),
+             ]);
+  return $result;
+}
+
+
+
+=item  is_uc_and_lc_internationalized
+
+Looks at the behavior of uc and lc for a small sample of
+"international characters": this simply checks if the extended
+characters of latin-1 and friends have an upper and lower form
+defined as expected.
+
+=cut
+
+sub is_uc_and_lc_internationalized {
+  my $exchars = define_sample_i18n_chars();
+  use locale;
+
+  my @checks;
+  foreach my $pair ( @{ $exchars } ) {
+    my $lower = $pair->[0];
+    my $upper = $pair->[1];
+
+    my $new_up   = uc($lower);
+    my $new_down = lc($upper);
+
+    if ( ($upper eq $new_up)   &&
+         ($lower eq $new_down) ) { # transformed as expected
+      push @checks, 1;
+    } else {
+      push @checks, 0;
+    }
+  }
+  print STDERR "internationalized_locale: char status: ",
+    join " ", @checks, "\n" if ($DEBUG) ;
+  my $okay = all_true( \@checks );
+
+  return $okay;
+}
+
+
+=item define_sample_i18n_chars
+
+Returns a short list of pairs of extended characters,
+pairing a lowercase form with an uppercase one
+(an aref of arefs).
+
+These were selected because they're the only extended
+characters in use in the test cases for L<Text::Capitalize>.
+
+=cut
+
+sub define_sample_i18n_chars {
+  my @exchars = (
+                ['ü', 'Ü'],
+                ['é', 'É'],
+                ['í', 'Í'],
+                ['ó', 'Ó'],
+              );
+
+  return \@exchars;
+}
+
+=item is_ucfirst_internationalized
+
+A very specific test to to see if ucfirst can upcase German's
+"over".  If it can, we assume ucfirst is working on the kind of
+international characters used in the Text::Capitalized tests.
+
+Motivation:
+
+Solaris boxes apparently have a knack for getting uc and lc to
+work on international characters, but still leaving ucfirst
+broken -- it upcases the character *after* a leading
+international character (such as a latin-1 u-umlaut):
+
+  Text-Capitalize-0.8:
+  - i86pc-solaris-thread-multi / 5.8.8:
+    - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/5882611
+
+  - sun4-solaris-64int / 5.8.4:
+    - FAIL http://nntp.x.perl.org/group/perl.cpan.testers/5846995
+
+=cut
+
+sub is_ucfirst_internationalized {
+  use locale;
+  my $over       = 'über';
+  my $upper_over = 'Über';
+
+  my $new_upper = ucfirst( $over );
+
+  if( $new_upper eq $upper_over ) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
+=item all_true
+
+Example usage:
+
+  my $okay = all_true( \@checks );
+
+This is an alternative to List::MoreUtils "all", written to
+avoid a non-core dependency for the L<Text::Capitalize> tests.
+
+Note: If you'd rather use that more common module, do this:
+
+   use List::MoreUtils qw( all );
+   my $okay = all { ($_) } @checks;
+
+=cut
+
+sub all_true {
+  my $aref = shift;
+  my $flag = 1;
+  foreach my $item ( @{ $aref } ) {
+    unless ($item) {
+      $flag = 0;
+      last;
+    }
+  }
+  return $flag;
 }
 
 =item  internationalized_locale
@@ -140,99 +287,11 @@ sub internationalized_locale {
     my $up = uc($ex);
     my $down = lc($ex);
     if ($up eq $down) { # then we got problems
-      warn "For this locale, uppercase and lowercase not defined for $ex\n" if $DEBUG;
+      warn "For this locale, uc & lc act strangely on $ex\n" if $DEBUG;
       $okay = 0;
     }
   }
   return $okay;
-}
-
-
-=item  is_locale_international
-
-Looks at the behavior of uc and lc for a small sample of
-"international characters": this simply checks if the extended
-characters of latin-1 and friends have an upper and lower form
-defined as expected.
-
-=cut
-
-sub is_locale_international {
-  my $exchars = define_sample_i18n_chars();
-  use locale;
-
-  my @checks;
-  foreach my $pair ( @{ $exchars } ) {
-    my $lower = $pair->[0];
-    my $upper = $pair->[1];
-
-    my $new_up   = uc($lower);
-    my $new_down = lc($upper);
-
-    if ( ($upper eq $new_up)   &&
-         ($lower eq $new_down) ) { # transformed as expected
-      push @checks, 1;
-    } else {
-      push @checks, 0;
-    }
-  }
-  print STDERR "internationalized_locale: char status: ",
-    join " ", @checks, "\n" if ($DEBUG) ;
-#  my $okay = all { ($_) } @checks;
-  my $okay = all_true( \@checks );
-
-  return $okay;
-}
-
-
-=item define_sample_i18n_chars
-
-Returns a short list of pairs of extended characters,
-pairing a lowercase form with an uppercase one
-(an aref of arefs).
-
-These were selected because they're the only extended
-characters in use in the test cases for L<Text::Capitalize>.
-
-=cut
-
-sub define_sample_i18n_chars {
-
-  my @exchars = (
-                ['ü', 'Ü'],
-                ['é', 'É'],
-                ['í', 'Í'],
-                ['ó', 'Ó'],
-              );
-
-  return \@exchars;
-}
-
-
-
-=item all_true
-
-
-Example usage:
-
-  my $okay = all_true( \@checks );
-
-This is an alternative to List::MoreUtils "all",
-written to avoid a non-core dependency for the
-L<Text::Capitalize> tests.
-
-=cut
-
-sub all_true {
-  my $aref = shift;
-  my $flag = 1;
-  foreach my $item ( @{ $aref } ) {
-    unless ($item) {
-      $flag = 0;
-      last;
-    }
-  }
-  return $flag;
 }
 
 1;
