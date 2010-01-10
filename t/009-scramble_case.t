@@ -7,12 +7,13 @@ use warnings;
 use strict;
 $|=1;
 use Env qw( $HOME );
+use utf8;
 my $TESTCASEGEN = 0;
 open my $TFH, ">", "$HOME/End/Cave/CapitalizeTitle/tmp/tempoutput.$$" or die $! if $TESTCASEGEN;
 
 use FindBin qw($Bin);
 BEGIN {
-  use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib");
+  use lib ("$Bin/../lib", "$Bin/../lib/perl", "$Bin/../t/lib");
 };
 
 my $basic_test_cases = define_basic_test_cases();
@@ -235,20 +236,20 @@ sub define_basic_test_cases {
 
 sub define_basic_test_cases_i18n {
   my %expect_scramble_case = (
-     'Didaktische Überlegungen/Erfahrungsbericht über den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>
-     'dIdaKtISchE ÜbERLeGUngEN/ErFahrUnGsbERIcht üBer DeN CoMpUtEREInsATz im GeIsTesWissENscHAFTlIchEN unTERRicHt AM BSP. "hIStoRIsChe zEITuNg"',
+     'Didaktische Ãœberlegungen/Erfahrungsbericht Ã¼ber den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>
+     'dIdaKtISchE ÃœbERLeGUngEN/ErFahrUnGsbERIcht Ã¼Ber DeN CoMpUtEREInsATz im GeIsTesWissENscHAFTlIchEN unTERRicHt AM BSP. "hIStoRIsChe zEITuNg"',
 
-     'Explicación dél significado de los términos utilizados en "Don Quijote", por capítulo.' =>
-     'exPlIcAciÓn dÉL SIgniFIcAdo De loS tÉRmiNoS UtiLiZadoS en "don QUIJoTE", pOr CAPÍtULO.',
+     'ExplicaciÃ³n dÃ©l significado de los tÃ©rminos utilizados en "Don Quijote", por capÃ­tulo.' =>
+     'exPlIcAciÃ“n dÃ‰L SIgniFIcAdo De loS tÃ‰RmiNoS UtiLiZadoS en "don QUIJoTE", pOr CAPÃtULO.',
 
-     'où l\'on découvre une époque à travers l\'oeuvre imposante d\'Honoré de Balzac' =>
-     'oÙ l\'on déCouVRE uNE ÉPOQUe à traVErs l\'OeuvRE iMPOSAnte d\'hONorÉ De bAlzac',
+     'oÃ¹ l\'on dÃ©couvre une Ã©poque Ã  travers l\'oeuvre imposante d\'HonorÃ© de Balzac' =>
+     'oÃ™ l\'on dÃ©CouVRE uNE Ã‰POQUe Ã  traVErs l\'OeuvRE iMPOSAnte d\'hONorÃ‰ De bAlzac',
 
-     'évêque, qu\'il eût aimé voir infliger à ceux qui ont abdiqué, J\'ai été reçu, and pepe le peau' =>
-     'évÊQue, Qu\'iL eûT AIMÉ vOiR inflIgER à ceux quI onT AbdIQué, J\'aI éTé REçU, and pepe lE peaU',
+     'Ã©vÃªque, qu\'il eÃ»t aimÃ© voir infliger Ã  ceux qui ont abdiquÃ©, J\'ai Ã©tÃ© reÃ§u, and pepe le peau' =>
+     'Ã©vÃŠQue, Qu\'iL eÃ»T AIMÃ‰ vOiR inflIgER Ã  ceux quI onT AbdIQuÃ©, J\'aI Ã©TÃ© REÃ§U, and pepe lE peaU',
 
-     'über maus' =>
-     'übeR mAuS',
+     'Ã¼ber maus' =>
+     'Ã¼beR mAuS',
   );
   return \%expect_scramble_case;
 }

@@ -9,8 +9,10 @@ default.
 There is also an optional "scramble_case" function which is designed
 to produce a "wEiRD eFFeCt".
 
-Version 0.9 primarily provides some documentation revisions,
+Version 0.9 primarily provided some documentation revisions,
 and switches to using Module::Build.
+Version 1.0 essentially just fixes test cases with international
+characters (switching from latin-1 to utf-8, etc).
 
 INSTALLATION
 

@@ -6,7 +6,7 @@
 use FindBin qw($Bin);
 use Test::More tests => 2;
 BEGIN {
-        use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib");
+        use lib ("$Bin/../lib", "$Bin/../lib/perl", "$Bin/../t/lib");
         use_ok('Text::Capitalize');
         use_ok("Test::Locale::Utils");
        };

@@ -6,10 +6,11 @@
 use warnings;
 use strict;
 $|=1;
+use utf8;
 
 use FindBin qw($Bin);
 BEGIN {
-  use lib ("$Bin/../../..", "$Bin/../lib/perl", "$Bin/../t/lib");
+  use lib ("$Bin/../lib", "$Bin/../lib/perl", "$Bin/../t/lib");
 };
 
 my $basic_test_cases = define_basic_test_cases();
@@ -216,14 +217,14 @@ sub define_basic_test_cases {
 
 sub define_basic_test_cases_i18n {
   my %expect_capitalize_title_PRESERVE_ALLCAPS_PRESERVE_WHITESPACE = (
-     'Didaktische ‹berlegungen/Erfahrungsbericht ¸ber den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>
-        'Didaktische ‹berlegungen/Erfahrungsbericht ‹ber Den Computereinsatz Im Geisteswissenschaftlichen Unterricht Am Bsp. "Historische Zeitung"',
-     '¸ber maus' =>
-        '‹ber Maus',
-     'ExplicaciÛn dÈl significado de los tÈrminos utilizados en "Don Quijote", por capÌtulo.' =>
-        'ExplicaciÛn DÈl Significado de Los TÈrminos Utilizados En "Don Quijote", Por CapÌtulo.',
-     'l\'oeuvre imposante d\'HonorÈ de Balzac' =>
-        'L\'Oeuvre Imposante d\'HonorÈ de Balzac',
+     'Didaktische √úberlegungen/Erfahrungsbericht √ºber den Computereinsatz im geisteswissenschaftlichen Unterricht am Bsp. "Historische Zeitung"' =>
+        'Didaktische √úberlegungen/Erfahrungsbericht √úber Den Computereinsatz Im Geisteswissenschaftlichen Unterricht Am Bsp. "Historische Zeitung"',
+     '√ºber maus' =>
+        '√úber Maus',
+     'Explicaci√≥n d√©l significado de los t√©rminos utilizados en "Don Quijote", por cap√≠tulo.' =>
+        'Explicaci√≥n D√©l Significado de Los T√©rminos Utilizados En "Don Quijote", Por Cap√≠tulo.',
+     'l\'oeuvre imposante d\'Honor√© de Balzac' =>
+        'L\'Oeuvre Imposante d\'Honor√© de Balzac',
   );
 
   return \%expect_capitalize_title_PRESERVE_ALLCAPS_PRESERVE_WHITESPACE;

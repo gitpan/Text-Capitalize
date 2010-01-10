@@ -25,8 +25,8 @@ Text::Capitalize - capitalize strings ("to WORK AS titles" becomes "To Work as T
    # To work on international characters, may need to set locale
    use Env qw( LANG );
    $LANG = "en_US";
-   print capitalize_title( "über maus" ), "\n";
-      Über Maus
+   print capitalize_title( "Ã¼ber maus" ), "\n";
+      Ãœber Maus
 
    use Text::Capitalize qw( scramble_case );
    print scramble_case( 'It depends on what you mean by "mean"' );
@@ -83,10 +83,12 @@ of transformation:
 
 =cut
 
-use 5.004;
+use 5.006;
 use strict;
+use warnings;
+use utf8;
 
-use locale;
+# use locale;
 use Carp;
 use Exporter;
 use vars qw(@ISA @EXPORT @EXPORT_OK $VERSION);
@@ -103,7 +105,7 @@ $DEBUG = 0;
                      zippify_case
                      capitalize_title_original
                     );
-$VERSION	= '0.9';
+$VERSION	= '1.0';
 
 # Define the pattern to match "exceptions": the minor words
 # that don't usually get capitalized in titles (used by capitalize_title)
@@ -185,13 +187,13 @@ The following customizations are allowed:
 
 Boolean:
 
-PRESERVE_WHITESPACE
-PRESERVE_ALLCAPS
-PRESERVE_ANYCAPS
+  PRESERVE_WHITESPACE
+  PRESERVE_ALLCAPS
+  PRESERVE_ANYCAPS
 
 Array reference:
 
-NOT_CAPITALIZED
+  NOT_CAPITALIZED
 
 See L<Customizing the Exceptions to Capitalization>.
 
@@ -495,7 +497,7 @@ The default entries on the exception list are:
      de von
 
 The observant may note that the last row is not composed of English
-words.  The honorary "de" has been included in honor of "Honoré de
+words.  The honorary "de" has been included in honor of "HonorÃ© de
 Balzac".  And "von" was added for the sake of equal time.
 
 
@@ -613,7 +615,7 @@ As of this writing, "capitalize_title" has some advantages:
 It works on characters outside the English 7-bit ASCII
 range, for example with my locale setting (en_US) the
 ISO-8859-1 International characters are handled correctly,
-so that "über maus" becomes "Über Maus".
+so that "Ã¼ber maus" becomes "Ãœber Maus".
 
 =item 2.
 
@@ -648,8 +650,8 @@ always preserves whitespace something like capitalize_title
 does with the PRESERVE_WHITESPACE option set.
 
 However, it should be pointed out that Text::Autoformat is under
-active maintenance by Damian Conway (and does far more than this
-module does): it's recommended that you look into using it.
+active maintenance by Damian Conway.  It also does far more than
+this module, and you may want to use it for other reasons.
 
 =head2 Still more ways to do it
 
@@ -797,10 +799,9 @@ Version 0.9
       ICQ UIN:	11979567
       Homepage:	http://sysdlabs.hypermart.net/
 
-And many thanks to:
+And many thanks (for feature suggestions and code examples) to:
 
-    Belden Lyman, for feature suggestions and code examples.
-    Yary Hcluhan, for an efficiency suggestion: split on [:alpha;]
+    Belden Lyman, Yary Hcluhan, Randal Schwartz
 
 =head1 COPYRIGHT AND LICENSE
 

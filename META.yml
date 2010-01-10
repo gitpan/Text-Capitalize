@@ -1,6 +1,6 @@
 ---
 name: Text-Capitalize
-version: 0.9
+version: 1.0
 author:
   - 'Joseph Brenner <doom@kzsu.stanford.edu>'
 abstract: capitalize strings ("to WORK AS titles" becomes "To Work as Titles")
@@ -13,13 +13,13 @@ build_requires:
   Exporter: 5.562
   FindBin: 1.04
   Test::More: 0
-  locale: 0
+  utf8: 0
 configure_requires:
   Module::Build: 0.35
 provides:
   Text::Capitalize:
     file: lib/Text/Capitalize.pm
-    version: 0.9
+    version: 1.0
 generated_by: Module::Build version 0.35
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html

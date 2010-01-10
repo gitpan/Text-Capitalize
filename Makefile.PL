@@ -10,7 +10,7 @@ WriteMakefile
                            'Exporter' => '5.562',
                            'FindBin' => '1.04',
                            'Test::More' => 0,
-                           'locale' => 0
+                           'utf8' => 0
                          },
           'INSTALLDIRS' => 'site',
           'EXE_FILES' => [],

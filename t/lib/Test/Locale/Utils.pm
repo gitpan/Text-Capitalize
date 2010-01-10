@@ -12,11 +12,11 @@ Test::Locale::Utils - utilities for writing tests involving international charac
    use Test::Locale::Utils qw( is_locale_international );
 
    my $i18n_test_cases = {
-     '¸ber maus' =>
-     '‹ber Maus',
+     '√ºber maus' =>
+     '√úber Maus',
 
-     'l\'oeuvre imposante d\'HonorÈ de Balzac' =>
-     'L\'Oeuvre Imposante d\'HonorÈ de Balzac',
+     'l\'oeuvre imposante d\'Honor√© de Balzac' =>
+     'L\'Oeuvre Imposante d\'Honor√© de Balzac',
    }
    my $i18n_test_count = scalar( keys( %{ $i18n_test_cases } ) );
 
@@ -68,7 +68,8 @@ on request (and all may be requested with the ":all" tag).
 use 5.006;
 use strict;
 use warnings;
-use locale;
+# use locale;
+use utf8;
 use Carp;
 use Data::Dumper;
 # use List::MoreUtils qw( all ); # Not in core, so writing my own "all"
@@ -148,7 +149,8 @@ defined as expected.
 
 sub is_uc_and_lc_internationalized {
   my $exchars = define_sample_i18n_chars();
-  use locale;
+#  use locale;
+  use utf8;
 
   my @checks;
   foreach my $pair ( @{ $exchars } ) {
@@ -185,13 +187,15 @@ characters in use in the test cases for L<Text::Capitalize>.
 =cut
 
 sub define_sample_i18n_chars {
+  use utf8;
   my @exchars = (
-                ['¸', '‹'],
-                ['È', '…'],
-                ['Ì', 'Õ'],
-                ['Û', '”'],
-              );
+                  ['√º', '√ú'],
+                  ['√©', '√â'],
+                  ['√≠', '√ç'],
+                  ['√≥', '√ì'],
+                 );
 
+  print Dumper( \@exchars ), "\n";
   return \@exchars;
 }
 
@@ -218,10 +222,14 @@ international character (such as a latin-1 u-umlaut):
 =cut
 
 sub is_ucfirst_internationalized {
-  use locale;
-  my $over       = '¸ber';
-  my $upper_over = '‹ber';
-
+#  use locale;
+  my ($over, $upper_over);
+  {
+    use utf8;
+    $over       = '√ºber';
+    $upper_over = '√úber';
+  }
+  use utf8;
   my $new_upper = ucfirst( $over );
 
   if( $new_upper eq $upper_over ) {
@@ -280,7 +288,7 @@ upper and lower have reversed positions.
 
 sub internationalized_locale {
   my @exchars = @_;
-  use locale;
+#  use locale;
 
   my $okay = 1;
   foreach my $ex (@exchars) {
@@ -348,3 +356,7 @@ at your option, any later version of Perl 5 you may have available.
 None reported... yet.
 
 =cut
+
+# Local Variables:
+# coding: utf-8-unix
+# End:
