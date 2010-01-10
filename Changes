@@ -44,3 +44,5 @@ Revision history for Text-Capitalize
      Made sure all files were saved with utf8 encoding
      (many were latin-1 before).
      Now requiring at least perl 5.6 (previously 5.4).
+
+1.1  Improved speed of capitalize_title routine.

@@ -105,7 +105,7 @@ $DEBUG = 0;
                      zippify_case
                      capitalize_title_original
                     );
-$VERSION	= '1.0';
+$VERSION	= '1.1';
 
 # Define the pattern to match "exceptions": the minor words
 # that don't usually get capitalized in titles (used by capitalize_title)
@@ -359,16 +359,15 @@ For a discussion of the algorithm, see L<SPECIAL EFFECTS>.
 # (though there are no worries about divide by zero there).
 
 # Note that this benchmarks faster:
-#   @chars = split /(?=.)/, $string;
-# Compared to
 #   @chars = split //, $string;
-#   @chars = split /(?<=[[:alpha:]])/, $string;  # Yary Hluchan suggestion
+# Than:
+#   @chars = split /(?<=[[:alpha:]])/, $string;
 
 sub scramble_case {
    my $string = shift;
    my (@chars, $uppity, $newstring, $total, $uppers, $downers, $tweak);
 
-   @chars = split /(?=.)/, $string;
+   @chars = split //, $string;
 
    $uppers = 2;
    $downers = 1;

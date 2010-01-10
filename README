@@ -9,10 +9,12 @@ default.
 There is also an optional "scramble_case" function which is designed
 to produce a "wEiRD eFFeCt".
 
-Version 0.9 primarily provided some documentation revisions,
-and switches to using Module::Build.
-Version 1.0 essentially just fixes test cases with international
+Version 1.1 improves the speed of the main capitalize_title routine.
+
+Version 1.0 was just fixes test cases with international
 characters (switching from latin-1 to utf-8, etc).
+Version 0.9 primarily provided some documentation revisions,
+and the switch to using Module::Build.
 
 INSTALLATION
 
