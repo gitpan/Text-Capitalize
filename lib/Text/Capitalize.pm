@@ -105,7 +105,7 @@ $DEBUG = 0;
                      zippify_case
                      capitalize_title_original
                     );
-$VERSION	= '1.2';
+$VERSION	= '1.3';
 
 # Define the pattern to match "exceptions": the minor words
 # that don't usually get capitalized in titles (used by capitalize_title)

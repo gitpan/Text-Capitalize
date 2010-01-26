@@ -326,6 +326,11 @@ perl runs on being POSIX compliant, (and like I just said,
 checking what kind of platform you're on is a little trickier
 than you'd think).
 
+And a recent discovery of mine: when the locale is utf-8,
+doing a "use locale" does not give you "unicode semantics",
+you actually have to do "utf8::upgrade" on anything you
+want "uc" and friends to work on.  Heigh-ho.
+
 This little module is an attempt at cutting the Gordian Knot
 represented by this cluster of problems, at least as far as
 the automated tests for L<Text::Capitalize> are concerned.

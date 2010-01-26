@@ -14,6 +14,7 @@ BEGIN { plan tests => 7 }; # TODO change to 'tests => last_test_to_print';
 use FindBin qw( $Bin ); # ~/End/Cave/CapitalizeTitle/Wall/Text/Capitalize/t/lib/Test/Locale/t/
 use lib ("$Bin/../../..");
 
+# TODO I'm "use"ing this twice...
 BEGIN {
   use_ok( 'Test::Locale::Utils' );
 }

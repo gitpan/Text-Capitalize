@@ -9,9 +9,7 @@ $|=1;
 use utf8;
 
 use FindBin qw($Bin);
-BEGIN {
-  use lib ("$Bin/../lib", "$Bin/../lib/perl", "$Bin/../t/lib");
-};
+use lib ("$Bin/../lib",  "$Bin/lib");
 
 my $basic_test_cases = define_basic_test_cases();
 my $i18n_test_cases = define_basic_test_cases_i18n();
