@@ -77,9 +77,10 @@ use Data::Dumper;
 my $DEBUG = 0;
 
 require Exporter;
+use vars qw( @ISA %EXPORT_TAGS @EXPORT @EXPORT_OK $VERSION);
 
-our @ISA = qw(Exporter);
-our %EXPORT_TAGS = ( 'all' => [ qw(
+@ISA = qw(Exporter);
+%EXPORT_TAGS = ( 'all' => [ qw(
   extract_extended_chars
   internationalized_locale
   is_locale_international
@@ -89,10 +90,10 @@ our %EXPORT_TAGS = ( 'all' => [ qw(
   is_ucfirst_internationalized
 
 ) ] );
-our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
-our @EXPORT = qw(  );
+@EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
+@EXPORT = qw(  );
 
-our $VERSION = '0.01';
+$VERSION = '0.01';
 
 =item extract_extended_chars
 
@@ -195,7 +196,7 @@ sub define_sample_i18n_chars {
                   ['ó', 'Ó'],
                  );
 
-  print Dumper( \@exchars ), "\n";
+  # print Dumper( \@exchars ), "\n";
   return \@exchars;
 }
 

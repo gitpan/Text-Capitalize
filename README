@@ -9,6 +9,8 @@ default.
 There is also an optional "scramble_case" function which is designed
 to produce a "wEiRD eFFeCt".
 
+Version 1.2 should work on perl 5.6 (there were problems in the tests).
+
 Version 1.1 improves the speed of the main capitalize_title routine.
 
 Version 1.0 was just fixes test cases with international

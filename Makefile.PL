@@ -5,12 +5,12 @@ WriteMakefile
           'NAME' => 'Text::Capitalize',
           'VERSION_FROM' => 'lib/Text/Capitalize.pm',
           'PREREQ_PM' => {
-                           'Carp' => '1.01',
+                           'Data::Dumper' => 0,
                            'Env' => '1',
-                           'Exporter' => '5.562',
                            'FindBin' => '1.04',
+                           'PerlIO::locale' => 0,
                            'Test::More' => 0,
-                           'utf8' => 0
+                           'lib' => 0
                          },
           'INSTALLDIRS' => 'site',
           'EXE_FILES' => [],

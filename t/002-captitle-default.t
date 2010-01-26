@@ -23,6 +23,34 @@ my $total = $basic_count + $i18n_count + 1;
 use Test::More;
 plan tests => $total;
 
+# binmode STDOUT, ':encoding(utf8)'; ## still see \374 with this
+# binmode STDERR, ':encoding(utf8)'; ## still see \374 with this
+
+# This does work... but how do I know that utf8 is the right encoding?
+# my $builder = Test::More->builder;
+# binmode $builder->output,         ":encoding(utf8)";
+# binmode $builder->failure_output, ":encoding(utf8)";
+# binmode $builder->todo_output,    ":encoding(utf8)";
+
+# This, of course, does not work (at least for this purpose):
+# use encoding ':locale';
+
+# How about... (nope):
+
+# my $builder = Test::More->builder;
+# binmode $builder->output,         ":locale";
+# binmode $builder->failure_output, ":locale";
+# binmode $builder->todo_output,    ":locale";
+
+# Unknown PerlIO layer "locale" at /home/doom/End/Cave/TextCap/Wall/Cpan/Text-Capitalize/t/002-captitle-default.t line 39.
+
+# This actually works:
+use PerlIO::locale;
+my $builder = Test::More->builder;
+binmode $builder->output,         ":locale";
+binmode $builder->failure_output, ":locale";
+binmode $builder->todo_output,    ":locale";
+
 use Text::Capitalize 0.4 qw(capitalize_title);
 use Test::Locale::Utils qw(:all);
 
